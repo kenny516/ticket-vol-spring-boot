@@ -1,27 +1,41 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Liste parametre</title>
+    <title>Flight Parameters List</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body>
 
-<table>
-    <thead>
-        <tr>Cle</tr>
-        <tr>Valeur</tr>
-    <tr>Modifier</tr>
-    </thead>
-    <tbody th:each="parametre : ${parametres}">
-        <tr th:text="${parametre.getCle()}"></tr>
-        <tr th:text="${parametre.getValeur()}"></tr>
-        <tr>
-            <button>
-                <a th:href="@{/parametres/form_parametre/{cle}(cle=${parametre.getCle()})}">Modifier</a>
-            </button>
-        </tr>
-    </tbody>
-</table>
+<body>
+    <div class="container">
+        <h1 class="form-title">Flight System Parameters</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="parametre : ${parametres}">
+                        <td th:text="${parametre.getCle()}"></td>
+                        <td th:text="${parametre.getValeur()}"></td>
+                        <td>
+                            <a class="btn btn-edit"
+                                th:href="@{/parametres/form_parametre/{cle}(cle=${parametre.getCle()})}">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
+
 </html>

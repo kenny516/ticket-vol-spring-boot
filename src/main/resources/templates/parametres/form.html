@@ -1,17 +1,33 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Formulaire parametre</title>
+    <title>Edit Parameter</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-<form action="/parametres/update" th:object="${parametres}" method="post">
-    <label for="cle">Cle</label>
-    <input id="cle" type="text" th:field="*{cle}">
-    <label for="valeur">Valeur</label>
-    <input id="valeur" type="text" th:field="*{valeur}">
-    <button type="submit">valider</button>
-</form>
+    <div class="container">
+        <div class="form-container">
+            <h1 class="form-title">Edit Flight Parameter</h1>
+            <form action="/parametres/update" th:object="${parametres}" method="post">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="cle">Key</label>
+                        <input class="form-input" id="cle" type="text" th:field="*{cle}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="valeur">Value</label>
+                        <input class="form-input" id="valeur" type="text" th:field="*{valeur}" required>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>
