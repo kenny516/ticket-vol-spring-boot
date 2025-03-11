@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formulaire parametre</title>
+</head>
+<body>
+<form action="/parametres/update" th:object="${parametres}" method="post">
+    <label for="cle">Cle</label>
+    <input id="cle" type="text" th:field="*{cle}">
+    <label for="valeur">Valeur</label>
+    <input id="valeur" type="text" th:field="*{valeur}">
+    <button type="submit">valider</button>
+</form>
+</body>
+</html>
