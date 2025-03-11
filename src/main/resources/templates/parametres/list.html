@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Liste parametre</title>
+</head>
+<body>
+
+<table>
+    <thead>
+        <tr>Cle</tr>
+        <tr>Valeur</tr>
+    <tr>Modifier</tr>
+    </thead>
+    <tbody th:each="parametre : ${parametres}">
+        <tr th:text="${parametre.getCle()}"></tr>
+        <tr th:text="${parametre.getValeur()}"></tr>
+        <tr>
+            <button>
+                <a th:href="@{/parametres/form_parametre/{cle}(cle=${parametre.getCle()})}">Modifier</a>
+            </button>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
