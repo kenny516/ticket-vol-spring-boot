@@ -23,7 +23,7 @@ public class ReservationService {
         List<Promotion> promotions = promotionService.findPromotionValidByVolAndTypeSiege(placeVol.getVol().getId(),placeVol.getTypeSiege().getId());
 
 
-        for
+        
 
 
 

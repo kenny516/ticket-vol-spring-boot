@@ -18,9 +18,10 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
                    promotion.id_type_siege,
                    promotion.id_vol
             FROM promotion
-            JOIN place_vol pv ON pv.id_type_siege = promotion.id_type_siege
-                AND pv.id_vol = promotion.id_vol
-            LEFT JOIN public.reservation r ON pv.id = r.id_place_vol
+                 JOIN vol v on v.id = promotion.id_vol
+                 JOIN public.place p on p.id_type_siege = promotion.id_type_siege AND p.id_avion = v.id_avion
+                 LEFT JOIN place_vol pv on p.id = pv.id_place AND pv.id_vol = promotion.id_vol
+                 LEFT JOIN public.reservation r on pv.id = r.id_place_vol
             GROUP BY promotion.nb_siege, promotion.id
             HAVING promotion.nb_siege - COALESCE(SUM(r.nb_places), 0) > 0
                 OR COALESCE(SUM(r.nb_places), 0) IS NULL
@@ -34,8 +35,10 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
                    promotion.id_type_siege,
                    promotion.id_vol
             from promotion
-                     JOIN place_vol pv on pv.id_type_siege = promotion.id_type_siege AND pv.id_vol = promotion.id_vol
-                     LEFT JOIN public.reservation r on pv.id = r.id_place_vol
+                 JOIN vol v on v.id = promotion.id_vol
+                 JOIN public.place p on p.id_type_siege = promotion.id_type_siege AND p.id_avion = v.id_avion
+                 LEFT JOIN place_vol pv on p.id = pv.id_place AND pv.id_vol = promotion.id_vol
+                 LEFT JOIN public.reservation r on pv.id = r.id_place_vol
             group by promotion.nb_siege, promotion.id,promotion.id_vol
             having promotion.nb_siege - COALESCE(SUM(r.nb_places), 0) > 0 AND promotion.id_vol = :idVol
                 or COALESCE(SUM(r.nb_places), 0) is null;
@@ -48,8 +51,10 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
                    promotion.id_type_siege,
                    promotion.id_vol
             from promotion
-                     JOIN place_vol pv on pv.id_type_siege = promotion.id_type_siege AND pv.id_vol = promotion.id_vol
-                     LEFT JOIN public.reservation r on pv.id = r.id_place_vol
+                 JOIN vol v on v.id = promotion.id_vol
+                 JOIN public.place p on p.id_type_siege = promotion.id_type_siege AND p.id_avion = v.id_avion
+                 LEFT JOIN place_vol pv on p.id = pv.id_place AND pv.id_vol = promotion.id_vol
+                 LEFT JOIN public.reservation r on pv.id = r.id_place_vol
             group by promotion.nb_siege, promotion.id,promotion.id_vol,promotion.id_type_siege
             having promotion.nb_siege - COALESCE(SUM(r.nb_places), 0) > 0 AND promotion.id_vol = :idVol AND promotion.id_type_siege = :idTypeSiege
                 or COALESCE(SUM(r.nb_places), 0) is null;
