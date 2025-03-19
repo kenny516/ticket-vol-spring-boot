@@ -1,5 +1,6 @@
 package com.ticketvol.ticketVol.service;
 
+import com.ticketvol.ticketVol.model.Avion;
 import com.ticketvol.ticketVol.model.Place;
 import com.ticketvol.ticketVol.repository.PlaceRepository;
 import lombok.AllArgsConstructor;
@@ -20,11 +21,18 @@ public class PlaceService {
         return placeRepository.findById(id).orElse(null);
     }
 
+    public List<Place> findByAvion(Avion avion) {
+        return placeRepository.findByIdAvion(avion);
+    }
 
     public Place findPlaceByIdVolAndTypeSiege(int idVol, int idTypeSiege) {
         return placeRepository.findPlaceByVolAndTypeSiege(idVol, idTypeSiege);
     }
 
-    public Boolean
-
+    public Boolean placeIsAvailable(int idVol, int idTypeSiege,int placeDemander) {
+        Place place = findPlaceByIdVolAndTypeSiege(idVol, idTypeSiege);
+        if (place == null) {
+            return false;
+        } else return place.getNombre() >= placeDemander;
+    }
 }

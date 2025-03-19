@@ -1,5 +1,6 @@
 package com.ticketvol.ticketVol.repository;
 
+import com.ticketvol.ticketVol.model.Avion;
 import com.ticketvol.ticketVol.model.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,8 +17,7 @@ public interface PlaceRepository extends JpaRepository<Place, Integer> {
                SELECT
                        place.id,
                        place.nombre - COALESCE(SUM(r.nb_places),0) as nombre,
-                       place.
-               id_type_siege,
+                       place.id_type_siege,
                        place.id_avion
                    FROM place
                         JOIN public.avion a on a.id = place.id_avion
@@ -29,4 +29,5 @@ public interface PlaceRepository extends JpaRepository<Place, Integer> {
             """,nativeQuery = true)
     Place findPlaceByVolAndTypeSiege(@Param("idVol") Integer idVol,@Param("idTypeSiege") Integer idTypeSiege);
 
+    List<Place> findByIdAvion(Avion idAvion);
 }
