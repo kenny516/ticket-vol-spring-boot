@@ -17,8 +17,12 @@ public class Place {
     @Column(name = "nombre")
     private Integer nombre;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_avion", nullable = false)
     private Avion idAvion;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "id_type_siege",nullable = false)
+    private TypeSiege typeSiege;
 
 }
