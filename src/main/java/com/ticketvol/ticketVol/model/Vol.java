@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,7 +17,7 @@ public class Vol {
     private Integer id;
 
     @Column(name = "date_depart")
-    private Instant dateDepart;
+    private LocalDateTime dateDepart;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_ville_depart", nullable = false)
