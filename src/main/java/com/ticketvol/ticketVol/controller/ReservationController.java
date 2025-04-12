@@ -37,12 +37,12 @@ public class ReservationController {
         return "";
     }
 
-    @GetMapping("/formulaire/{idVol}")
-    public String formulaireReservation(@PathVariable Integer idVol, HttpSession session, Model model) {
-
-
-
-    }
+//    @GetMapping("/formulaire/{idVol}")
+//    public String formulaireReservation(@PathVariable Integer idVol, HttpSession session, Model model) {
+//
+//
+//
+//    }
 
     @PostMapping("/reserver")
     public String reserveReservation(HttpSession session, BindingResult result,Reservation reservation) {

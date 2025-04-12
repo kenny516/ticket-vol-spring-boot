@@ -1,45 +1,30 @@
 package com.ticketvol.ticketVol.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "reservation")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "prix")
     private Double prix;
-
-    @ColumnDefault("true")
-    @Column(name = "valider")
-    private Boolean valider;
-
-    @Column(name = "nb_places")
+    private Boolean valider = true;
     private Integer nbPlaces;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_place_vol", nullable = false)
-    private PlaceVol placeVol;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_utilisateur", nullable = false)
-    private Utilisateur utilisateur;
-
-    @Column(name = "nb_adulte")
     private Integer nbAdulte;
-
-    @Column(name = "nb_enfant")
     private Integer nbEnfant;
 
-    @Column(name = "id_promotion")
-    private Integer idPromotion;
+    @ManyToOne
+    @JoinColumn(name = "id_place_vol")
+    private PlaceVol placeVol;
 
+    @ManyToOne
+    @JoinColumn(name = "id_utilisateur")
+    private Utilisateur utilisateur;
 }
