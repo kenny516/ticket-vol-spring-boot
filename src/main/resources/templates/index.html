@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Flight Ticket System</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-container">
+            <h1 class="form-title">Flight Ticket System Login</h1>
+            <form action="/login" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="pseudo">Username</label>
+                    <input class="form-input" id="pseudo" type="text" name="pseudo" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="motDePasse">Password</label>
+                    <input class="form-input" id="motDePasse" type="password" name="motDePasse" required>
+                </div>
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
