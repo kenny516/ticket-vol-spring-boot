@@ -1,34 +1,32 @@
 package com.ticketvol.ticketVol.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "vol")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "date_depart")
     private LocalDateTime dateDepart;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_ville_depart", nullable = false)
-    private Ville idVilleDepart;
+    @ManyToOne
+    @JoinColumn(name = "id_ville_depart")
+    private Ville villeDepart;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_ville_arrive", nullable = false)
-    private Ville idVilleArrive;
+    @ManyToOne
+    @JoinColumn(name = "id_ville_arrive")
+    private Ville villeArrive;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_avion", nullable = false)
-    private Avion idAvion;
-
+    @ManyToOne
+    @JoinColumn(name = "id_avion")
+    private Avion avion;
 }

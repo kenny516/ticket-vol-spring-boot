@@ -1,20 +1,18 @@
 package com.ticketvol.ticketVol.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "ville")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Ville {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "nom", length = 50)
     private String nom;
-
 }
