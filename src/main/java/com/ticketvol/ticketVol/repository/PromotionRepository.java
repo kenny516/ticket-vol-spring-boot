@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
-    List<Promotion> findByIdVol(Vol idVol);
+    List<Promotion> findByVol(Vol vol);
 
     @Query(value = """
             SELECT promotion.id,

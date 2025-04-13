@@ -51,12 +51,12 @@ public class ReservationController {
         PlaceVol placeVol = placeVolService.findById(reservation.getPlaceVol().getId());
         reservation.setPlaceVol(placeVol);
 
-        if (placeService.placeIsAvailable(reservation.getPlaceVol().getVol().getId(),reservation.getPlaceVol().getTypeSiege().getId(),reservation.getNbPlaces())){
+        if (placeService.placeIsAvailable(reservation.getPlaceVol().getVol().getId(),reservation.getPlaceVol().getPlace().getTypeSiege().getId(),reservation.getNbPlaces())){
             // do reservation
 
 
         }else {
-            Place placeDispo = placeService.findPlaceByIdVolAndTypeSiege(reservation.getPlaceVol().getVol().getId(),reservation.getPlaceVol().getTypeSiege().getId());
+            Place placeDispo = placeService.findPlaceByIdVolAndTypeSiege(reservation.getPlaceVol().getVol().getId(),reservation.getPlaceVol().getPlace().getTypeSiege().getId());
             result.rejectValue("nbPlace","error.nbPlace","Nombre de place insuffisant pour ce vol place restant "+placeDispo.getNombre());
             //use it <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
             return "/reservation/formulaire";

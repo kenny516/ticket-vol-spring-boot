@@ -16,7 +16,7 @@ public class PromotionService {
     private final PromotionRepository promotionRepository;
 
     public List<Promotion> findByVol(Vol  vol) {
-        return promotionRepository.findByIdVol(vol);
+        return promotionRepository.findByVol(vol);
     }
 
     // encore disponible
