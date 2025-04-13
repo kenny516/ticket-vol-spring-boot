@@ -25,6 +25,6 @@ public class ReservationService {
     public void setPromotion(Reservation reservation) {
         PlaceVol placeVol = reservation.getPlaceVol();
         List<Promotion> promotions = promotionService.findPromotionValidByVolAndTypeSiege(placeVol.getVol().getId(),
-                placeVol.getTypeSiege().getId());
+                placeVol.getPlace().getTypeSiege().getId());
     }
 }
