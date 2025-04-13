@@ -9,17 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Utilisateur {
+@Table(name = "type_siege")
+public class TypeSiege {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nom;
-    private String prenom;
-    private String role;
-    private String pseudo;
-
-    @Column(name = "mot_de_passe")
-    private String motDePasse;
-    private String pdp;
+    @Column(name = "designation")
+    private String designation;
 }

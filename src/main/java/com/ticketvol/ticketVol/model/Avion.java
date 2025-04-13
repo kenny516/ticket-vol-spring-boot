@@ -4,22 +4,19 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDate;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Utilisateur {
+public class Avion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nom;
-    private String prenom;
-    private String role;
-    private String pseudo;
+    private String modele;
 
-    @Column(name = "mot_de_passe")
-    private String motDePasse;
-    private String pdp;
+    @Column(name = "date_fabrication")
+    private LocalDate dateFabrication;
 }

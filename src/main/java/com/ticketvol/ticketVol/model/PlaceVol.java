@@ -9,17 +9,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Utilisateur {
+@Table(name = "place_vol")
+public class PlaceVol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nom;
-    private String prenom;
-    private String role;
-    private String pseudo;
+    @Column(name = "prix")
+    private Double prix;
 
-    @Column(name = "mot_de_passe")
-    private String motDePasse;
-    private String pdp;
+    @ManyToOne
+    @JoinColumn(name = "id_vol")
+    private Vol vol;
+
+    @ManyToOne
+    @JoinColumn(name = "id_place")
+    private Place place;
 }
