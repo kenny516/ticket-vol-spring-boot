@@ -17,10 +17,10 @@ import java.util.List;
 public class VolController {
     private final VolService volService;
 
-//    @GetMapping("")
-//    public String listVolValid(Model model) {
-//        List<VolDTO> volDTOS = volService.findAllVolDTOValid();
-//        model.addAttribute("volDTOS", volDTOS);
-//        return "vol/listVolValid";
-//    }
+    @GetMapping("")
+    public String listVolValid(Model model) {
+        List<VolDTO> volDTOS = volService.findAllVolDTOValid();
+        model.addAttribute("volDTOS", volDTOS);
+        return "vol/listVolValid";
+    }
 }
