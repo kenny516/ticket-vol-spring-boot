@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - TicketVol</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Contenu principal -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <!-- En-tête -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="text-primary mb-0">
+                        <i class="fas fa-user-circle me-2"></i>
+                        Mon Profil
+                    </h2>
+                </div>
+
+                <!-- Informations utilisateur -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Informations personnelles
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-muted">
+                                    <i class="fas fa-user me-1"></i>
+                                    Nom
+                                </label>
+                                <p class="form-control-plaintext fw-bold" th:text="${session.utilisateur.nom}">Nom</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-muted">
+                                    <i class="fas fa-user me-1"></i>
+                                    Prénom
+                                </label>
+                                <p class="form-control-plaintext fw-bold" th:text="${session.utilisateur.prenom}">Prénom
+                                </p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-muted">
+                                    <i class="fas fa-at me-1"></i>
+                                    Pseudo
+                                </label>
+                                <p class="form-control-plaintext fw-bold" th:text="${session.utilisateur.pseudo}">Pseudo
+                                </p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-muted">
+                                    <i class="fas fa-shield-alt me-1"></i>
+                                    Rôle
+                                </label>
+                                <p class="form-control-plaintext">
+                                    <span class="badge bg-secondary fs-6"
+                                        th:text="${session.utilisateur.role}">client</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="card shadow-sm mt-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cogs me-2"></i>
+                            Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Mes réservations (pour les clients) -->
+                            <div class="col-md-6 mb-3" th:if="${session.utilisateur.role == 'client'}">
+                                <a href="/reservation" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-ticket-alt me-2"></i>
+                                    Mes Réservations
+                                </a>
+                            </div>
+
+                            <!-- Administration (pour les admins) -->
+                            <div class="col-md-6 mb-3" th:if="${session.utilisateur.role == 'admin'}">
+                                <a href="/parametres/" class="btn btn-outline-success w-100">
+                                    <i class="fas fa-cog me-2"></i>
+                                    Gestion des Paramètres
+                                </a>
+                            </div>
+
+                            <!-- Déconnexion -->
+                            <div class="col-md-6 mb-3">
+                                <a href="/logout" class="btn btn-outline-danger w-100">
+                                    <i class="fas fa-sign-out-alt me-2"></i>
+                                    Se Déconnecter
+                                </a>
+                            </div>
+
+                            <!-- Retour à l'accueil -->
+                            <div class="col-md-6 mb-3">
+                                <a href="/" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-home me-2"></i>
+                                    Retour à l'Accueil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Réservations - TicketVol</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .reservation-card {
+            transition: transform 0.2s ease-in-out;
+            border-left: 4px solid #0d6efd;
+        }
+
+        .reservation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-badge {
+            font-size: 0.8em;
+        }
+
+        .btn-cancel {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: linear-gradient(45deg, #c82333, #a71e2a);
+            transform: scale(1.05);
+        }
+
+        .flight-info {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .price-highlight {
+            color: #198754;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <!-- Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <!-- En-tête de page -->
+    <div class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-0">
+                        <i class="bi bi-ticket-perforated me-3"></i>
+                        Mes Réservations
+                    </h1>
+                    <p class="mb-0 mt-2 opacity-75">Gérez vos réservations de vol en toute simplicité</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="/" class="btn btn-light">
+                        <i class="bi bi-house me-2"></i>Accueil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Messages de feedback -->
+        <div th:if="${successMessage}" class="alert alert-success alert-custom alert-dismissible fade show"
+            role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger alert-custom alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle me-2"></i>
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Information sur les conditions d'annulation -->
+        <div class="alert alert-info alert-custom mb-4">
+            <h6 class="alert-heading">
+                <i class="bi bi-info-circle me-2"></i>Conditions d'annulation
+            </h6>
+            <p class="mb-0">
+                Vous pouvez annuler vos réservations jusqu'à <strong>48 heures</strong> avant le départ du vol.
+                L'annulation est gratuite et immédiate.
+            </p>
+        </div>
+
+        <!-- Liste des réservations -->
+        <div class="row">
+            <div class="col-12">
+                <div th:if="${#lists.isEmpty(reservations)}" class="text-center py-5">
+                    <i class="bi bi-ticket-perforated" style="font-size: 3rem; color: #ccc;"></i>
+                    <h4 class="mt-3 text-muted">Aucune réservation trouvée</h4>
+                    <p class="text-muted">Vous n'avez pas encore effectué de réservation.</p>
+                    <a href="/" class="btn btn-primary">
+                        <i class="bi bi-search me-2"></i>Rechercher des vols
+                    </a>
+                </div>
+
+                <div th:unless="${#lists.isEmpty(reservations)}">
+                    <div class="row">
+                        <div th:each="reservation : ${reservations}" class="col-lg-6 col-xl-4 mb-4">
+                            <div class="card reservation-card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">
+                                        <i class="bi bi-airplane me-2"></i>
+                                        Réservation #<span th:text="${reservation.id}"></span>
+                                    </h6>
+                                    <span th:if="${reservation.valider}" class="badge bg-success status-badge">
+                                        <i class="bi bi-check-circle me-1"></i>Validée
+                                    </span>
+                                    <span th:unless="${reservation.valider}" class="badge bg-danger status-badge">
+                                        <i class="bi bi-x-circle me-1"></i>Annulée
+                                    </span>
+                                </div>
+
+                                <div class="card-body">
+                                    <!-- Informations du vol -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div>
+                                                <i class="bi bi-geo-alt text-primary me-1"></i>
+                                                <strong th:text="${reservation.placeVol.vol.villeDepart.nom}"></strong>
+                                            </div>
+                                            <div class="text-center">
+                                                <i class="bi bi-arrow-right text-muted"></i>
+                                            </div>
+                                            <div>
+                                                <i class="bi bi-geo-alt-fill text-success me-1"></i>
+                                                <strong th:text="${reservation.placeVol.vol.villeArrive.nom}"></strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar3 me-1"></i>
+                                                <span
+                                                    th:text="${#temporals.format(reservation.placeVol.vol.dateDepart, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Détails de la réservation -->
+                                    <div class="mb-3">
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Places</small>
+                                                <span class="fw-bold">
+                                                    <i class="bi bi-people me-1"></i>
+                                                    <span th:text="${reservation.nbPlaces}"></span>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Type de siège</small>
+                                                <span class="fw-bold"
+                                                    th:text="${reservation.placeVol.place.typeSiege.designation}"></span>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Adultes</small>
+                                                <span th:text="${reservation.nbAdulte}"></span>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Enfants</small>
+                                                <span th:text="${reservation.nbEnfant}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Prix -->
+                                    <div class="text-center">
+                                        <h5 class="text-primary mb-0">
+                                            <span th:text="${#numbers.formatDecimal(reservation.prix, 1, 2)}"></span>€
+                                        </h5>
+                                        <small class="text-muted">
+                                            Réservé le <span
+                                                th:text="${#dates.format(reservation.dateReservation, 'dd/MM/yyyy')}"></span>
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="card-footer bg-transparent">
+                                    <div class="d-grid gap-2">
+                                        <!-- Bouton PDF (toujours visible pour les réservations validées) -->
+                                        <a th:if="${reservation.valider}"
+                                            th:href="@{/api/reservations/{id}/pdf(id=${reservation.id})}"
+                                            class="btn btn-success btn-pdf btn-sm">
+                                            <i class="bi bi-file-earmark-pdf me-2"></i>
+                                            Télécharger PDF
+                                        </a>
+
+                                        <!-- Bouton d'annulation (conditionnel) -->
+                                        <form th:if="${reservation.valider and reservation.cancelable}"
+                                            th:action="@{/reservation/cancel/{id}(id=${reservation.id})}" method="post"
+                                            onsubmit="return confirmCancel()">
+                                            <button type="submit" class="btn btn-danger btn-cancel btn-sm w-100">
+                                                <i class="bi bi-x-circle me-2"></i>
+                                                Annuler la réservation
+                                            </button>
+                                        </form>
+
+                                        <!-- Message si annulation impossible -->
+                                        <div th:if="${reservation.valider and !reservation.cancelable}"
+                                            class="text-center">
+                                            <small class="text-muted">
+                                                <i class="bi bi-info-circle me-1"></i>
+                                                Délai d'annulation dépassé
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmCancel() {
+            return confirm('Êtes-vous sûr de vouloir annuler cette réservation ? Cette action est irréversible.');
+        }
+
+        // Auto-dismiss alerts after 5 seconds
+        setTimeout(function () {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function (alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+    <!-- Fragment de navbar -->
+    <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <!-- Logo/Brand -->
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-plane me-2"></i>
+                TicketVol
+            </a>
+
+            <!-- Bouton toggle pour mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menu de navigation -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <!-- Accueil -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>
+                            Accueil
+                        </a>
+                    </li>
+
+
+                    <!-- Mes Réservations (visible seulement pour les clients) -->
+                    <li class="nav-item"
+                        th:if="${session.utilisateur != null and session.utilisateur.role == 'client'}">
+                        <a class="nav-link" href="/reservation">
+                            <i class="fas fa-ticket-alt me-1"></i>
+                            Mes Réservations
+                        </a>
+                    </li>
+
+                    <!-- Administration (visible seulement pour les admins) -->
+                    <li class="nav-item dropdown"
+                        th:if="${session.utilisateur != null and session.utilisateur.role == 'admin'}">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cog me-1"></i>
+                            Administration
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                            <li><a class="dropdown-item" href="/parametres/">
+                                    <i class="fas fa-sliders-h me-2"></i>
+                                    Paramètres
+                                </a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- Menu utilisateur -->
+                <ul class="navbar-nav">
+                    <!-- Si utilisateur connecté -->
+                    <li class="nav-item dropdown" th:if="${session.utilisateur != null}">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span
+                                th:text="${session.utilisateur.prenom + ' ' + session.utilisateur.nom}">Utilisateur</span>
+                            <span class="badge bg-secondary ms-1" th:text="${session.utilisateur.role}">role</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/profile">
+                                    <i class="fas fa-user me-2"></i>
+                                    Mon Profil
+                                </a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/logout">
+                                    <i class="fas fa-sign-out-alt me-2"></i>
+                                    Déconnexion
+                                </a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Si utilisateur non connecté -->
+                    <li class="nav-item" th:if="${session.utilisateur == null}">
+                        <a class="nav-link" href="/login">
+                            <i class="fas fa-sign-in-alt me-1"></i>
+                            Connexion
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</body>
+
+</html>
