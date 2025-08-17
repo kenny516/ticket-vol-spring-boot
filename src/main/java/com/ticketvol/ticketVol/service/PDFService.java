@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +64,11 @@ public class PDFService {
 
             // Ajout des informations de réservation
             addTableRow(infoTable, "N° de Réservation", String.valueOf(reservation.getId()), sectionFont, valueFont);
+            addTableRow(infoTable, "Date de Réservation",
+                    reservation.getDateReservation().toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                    sectionFont, valueFont);
             addTableRow(infoTable, "Client",
                     reservation.getUtilisateur().getNom() + " " + reservation.getUtilisateur().getPrenom(), sectionFont,
                     valueFont);
@@ -97,7 +103,8 @@ public class PDFService {
             placeTable.setWidthPercentage(100);
             placeTable.setSpacingAfter(20);
 
-            addTableRow(placeTable, "Type de siège", reservation.getPlaceVol().getPlace().getTypeSiege().getDesignation(),
+            addTableRow(placeTable, "Type de siège",
+                    reservation.getPlaceVol().getPlace().getTypeSiege().getDesignation(),
                     sectionFont, valueFont);
             addTableRow(placeTable, "Nombre de places", String.valueOf(reservation.getNbPlaces()), sectionFont,
                     valueFont);

@@ -1,41 +1,138 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Flight Parameters List</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Paramètres Système - TicketVol</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .parameter-card {
+            transition: transform 0.2s ease-in-out;
+            border-left: 4px solid #0d6efd;
+        }
+
+        .parameter-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-edit {
+            background: linear-gradient(45deg, #198754, #20c997);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            background: linear-gradient(45deg, #20c997, #0dcaf0);
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 
-<body>
-    <div class="container">
-        <h1 class="form-title">Flight System Parameters</h1>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Key</th>
-                        <th>Value</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="parametre : ${parametres}">
-                        <td th:text="${parametre.getCle()}"></td>
-                        <td th:text="${parametre.getValeur()}"></td>
-                        <td>
-                            <a class="btn btn-edit"
-                                th:href="@{/parametres/form_parametre/{cle}(cle=${parametre.getCle()})}">
-                                Edit
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<body class="bg-light">
+    <!-- Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="display-6 fw-bold">
+                        <i class="fas fa-sliders-h me-3 text-primary"></i>
+                        Paramètres Système
+                    </h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Paramètres</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-cog me-2"></i>
+                            Configuration du Système
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">
+                                            <i class="fas fa-key me-2"></i>
+                                            Paramètre
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-tag me-2"></i>
+                                            Valeur
+                                        </th>
+                                        <th scope="col">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            Description
+                                        </th>
+                                        <th scope="col" class="text-center">
+                                            <i class="fas fa-tools me-2"></i>
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="parametre : ${parametres}">
+                                        <td>
+                                            <span class="fw-bold" th:text="${parametre.getCle()}"></span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info" th:text="${parametre.getValeur()}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:switch="${parametre.getCle()}">
+                                                <span th:case="'delai_reservation'">Délai minimum avant le vol pour
+                                                    faire une réservation (heures)</span>
+                                                <span th:case="'delai_annulation'">Délai minimum avant le vol pour
+                                                    annuler une réservation (heures)</span>
+                                                <span th:case="'reduc_enfant'">Pourcentage de réduction pour les enfants
+                                                    (%)</span>
+                                                <span th:case="*">Paramètre personnalisé</span>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-edit btn-sm text-white"
+                                                th:href="@{/parametres/form_parametre/{cle}(cle=${parametre.getCle()})}">
+                                                <i class="fas fa-edit me-1"></i>
+                                                Modifier
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div th:if="${#lists.isEmpty(parametres)}" class="text-center py-5">
+                            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                            <h5>Aucun paramètre configuré</h5>
+                            <p class="text-muted">Les paramètres système n'ont pas encore été configurés.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -1,31 +1,269 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - Flight Ticket System</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>TicketVol - Système de Réservation de Vols</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #0d6efd, #6610f2);
+            color: white;
+            padding: 4rem 0;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn-custom {
+            background: linear-gradient(45deg, #0d6efd, #6610f2);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="login-container">
-            <h1 class="form-title">Flight Ticket System Login</h1>
-            <form action="/login" method="post">
-                <div class="form-group">
-                    <label class="form-label" for="pseudo">Username</label>
-                    <input class="form-input" id="pseudo" type="text" name="pseudo" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="motDePasse">Password</label>
-                    <input class="form-input" id="motDePasse" type="password" name="motDePasse" required>
-                </div>
-                <button class="btn btn-primary" type="submit">Login</button>
-            </form>
+    <!-- Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Messages d'alerte -->
+    <div class="container mt-3" th:if="${param.error}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span th:switch="${param.error[0]}">
+                <span th:case="'access-denied'">Accès refusé. Cette section est réservée aux clients.</span>
+                <span th:case="*">Une erreur est survenue.</span>
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
+
+    <!-- Section principale -->
+    <div th:if="${session.utilisateur == null}">
+        <!-- Hero Section pour les utilisateurs non connectés -->
+        <section class="hero-section text-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h1 class="display-4 fw-bold mb-4">
+                            <i class="fas fa-plane me-3"></i>
+                            Bienvenue sur TicketVol
+                        </h1>
+                        <p class="lead mb-5">
+                            Réservez vos vols en toute simplicité. Trouvez les meilleurs tarifs et gérez vos
+                            réservations en ligne.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Formulaire de connexion -->
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="login-container">
+                            <h3 class="text-center text-dark mb-4">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Connexion
+                            </h3>
+                            <form action="/login" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label text-dark" for="pseudo">
+                                        <i class="fas fa-user me-1"></i>
+                                        Nom d'utilisateur
+                                    </label>
+                                    <input class="form-control" id="pseudo" type="text" name="pseudo" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label text-dark" for="motDePasse">
+                                        <i class="fas fa-lock me-1"></i>
+                                        Mot de passe
+                                    </label>
+                                    <input class="form-control" id="motDePasse" type="password" name="motDePasse"
+                                        required>
+                                </div>
+                                <button class="btn btn-custom text-white w-100" type="submit">
+                                    <i class="fas fa-sign-in-alt me-2"></i>
+                                    Se connecter
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row text-center mb-5">
+                    <div class="col">
+                        <h2 class="fw-bold">Pourquoi choisir TicketVol ?</h2>
+                        <p class="text-muted">Découvrez nos avantages</p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card feature-card h-100 text-center p-4">
+                            <div class="card-body">
+                                <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">Recherche Facile</h5>
+                                <p class="card-text">Trouvez rapidement les vols qui correspondent à vos besoins avec
+                                    notre moteur de recherche avancé.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card feature-card h-100 text-center p-4">
+                            <div class="card-body">
+                                <i class="fas fa-credit-card fa-3x text-success mb-3"></i>
+                                <h5 class="card-title">Paiement Sécurisé</h5>
+                                <p class="card-text">Réservez en toute confiance avec nos systèmes de paiement sécurisés
+                                    et nos meilleurs tarifs.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card feature-card h-100 text-center p-4">
+                            <div class="card-body">
+                                <i class="fas fa-headset fa-3x text-info mb-3"></i>
+                                <h5 class="card-title">Support 24/7</h5>
+                                <p class="card-text">Notre équipe de support est disponible 24h/24 pour vous aider dans
+                                    vos réservations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Dashboard pour les utilisateurs connectés -->
+    <div th:if="${session.utilisateur != null}">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-5 text-center">
+                            <h1 class="display-5 fw-bold mb-4">
+                                <i class="fas fa-user-circle me-3 text-primary"></i>
+                                Bienvenue,
+                                <span
+                                    th:text="${session.utilisateur.prenom + ' ' + session.utilisateur.nom}">Utilisateur</span>
+                            </h1>
+
+                            <div class="row mt-5 g-4">
+                                <!-- Pour les clients -->
+                                <div th:if="${session.utilisateur.role == 'client'}">
+                                    <div class="col-md-6">
+                                        <div class="card feature-card h-100 text-center p-4">
+                                            <div class="card-body">
+                                                <i class="fas fa-plane-departure fa-3x text-primary mb-3"></i>
+                                                <h5 class="card-title">Rechercher des Vols</h5>
+                                                <p class="card-text">Trouvez et réservez vos prochains vols</p>
+                                                <a href="/vols" class="btn btn-primary">
+                                                    <i class="fas fa-search me-2"></i>
+                                                    Rechercher
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card feature-card h-100 text-center p-4">
+                                            <div class="card-body">
+                                                <i class="fas fa-ticket-alt fa-3x text-success mb-3"></i>
+                                                <h5 class="card-title">Mes Réservations</h5>
+                                                <p class="card-text">Gérez vos réservations existantes</p>
+                                                <a href="/reservation" class="btn btn-success">
+                                                    <i class="fas fa-list me-2"></i>
+                                                    Voir mes réservations
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pour les administrateurs -->
+                                <div th:if="${session.utilisateur.role == 'admin'}">
+                                    <div class="col-md-4">
+                                        <div class="card feature-card h-100 text-center p-4">
+                                            <div class="card-body">
+                                                <i class="fas fa-sliders-h fa-3x text-warning mb-3"></i>
+                                                <h5 class="card-title">Paramètres</h5>
+                                                <p class="card-text">Configuration du système</p>
+                                                <a href="/parametres/" class="btn btn-warning">
+                                                    <i class="fas fa-cog me-2"></i>
+                                                    Gérer
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card feature-card h-100 text-center p-4">
+                                            <div class="card-body">
+                                                <i class="fas fa-plane fa-3x text-info mb-3"></i>
+                                                <h5 class="card-title">Gestion Vols</h5>
+                                                <p class="card-text">Administrer les vols</p>
+                                                <a href="/admin/vols" class="btn btn-info">
+                                                    <i class="fas fa-plane me-2"></i>
+                                                    Gérer
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card feature-card h-100 text-center p-4">
+                                            <div class="card-body">
+                                                <i class="fas fa-users fa-3x text-danger mb-3"></i>
+                                                <h5 class="card-title">Utilisateurs</h5>
+                                                <p class="card-text">Gestion des utilisateurs</p>
+                                                <a href="/admin/users" class="btn btn-danger">
+                                                    <i class="fas fa-users me-2"></i>
+                                                    Gérer
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

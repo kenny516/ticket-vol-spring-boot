@@ -1,33 +1,160 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Parameter</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Modifier Paramètre - TicketVol</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .parameter-info {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-save {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save:hover {
+            background: linear-gradient(45deg, #20c997, #17a2b8);
+            transform: scale(1.05);
+        }
+
+        .btn-cancel {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: linear-gradient(45deg, #495057, #343a40);
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 
-<body>
-    <div class="container">
+<body class="bg-light">
+    <!-- Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+                        <li class="breadcrumb-item"><a href="/parametres/">Paramètres</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Modifier</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
         <div class="form-container">
-            <h1 class="form-title">Edit Flight Parameter</h1>
-            <form action="/parametres/update" th:object="${parametres}" method="post">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label" for="cle">Key</label>
-                        <input class="form-input" id="cle" type="text" th:field="*{cle}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="valeur">Value</label>
-                        <input class="form-input" id="valeur" type="text" th:field="*{valeur}" required>
-                    </div>
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>
+                        Modifier le Paramètre
+                    </h3>
                 </div>
-                <button class="btn btn-primary" type="submit">Save Changes</button>
-            </form>
+                <div class="card-body p-4">
+
+                    <!-- Information sur le paramètre -->
+                    <div class="parameter-info">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Information sur le paramètre
+                        </h5>
+                        <div th:switch="${parametres.cle}">
+                            <div th:case="'delai_reservation'">
+                                <strong>Délai de réservation :</strong>
+                                Temps minimum requis avant le départ du vol pour effectuer une réservation.
+                                <br><small class="text-muted">Valeur en heures (ex: 24 = 24 heures avant le vol)</small>
+                            </div>
+                            <div th:case="'delai_annulation'">
+                                <strong>Délai d'annulation :</strong>
+                                Temps minimum requis avant le départ du vol pour annuler une réservation.
+                                <br><small class="text-muted">Valeur en heures (ex: 48 = 48 heures avant le vol)</small>
+                            </div>
+                            <div th:case="'reduc_enfant'">
+                                <strong>Réduction enfant :</strong>
+                                Pourcentage de réduction appliqué aux billets enfants.
+                                <br><small class="text-muted">Valeur en pourcentage (ex: 20 = 20% de réduction)</small>
+                            </div>
+                            <div th:case="*">
+                                <strong>Paramètre personnalisé :</strong>
+                                Configuration spécifique du système.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulaire -->
+                    <form action="/parametres/update" th:object="${parametres}" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold" for="cle">
+                                    <i class="fas fa-key me-1"></i>
+                                    Clé du paramètre
+                                </label>
+                                <input class="form-control" id="cle" type="text" th:field="*{cle}" readonly>
+                                <div class="form-text">
+                                    <i class="fas fa-lock me-1"></i>
+                                    Cette valeur ne peut pas être modifiée
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold" for="valeur">
+                                    <i class="fas fa-tag me-1"></i>
+                                    Valeur
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input class="form-control" id="valeur" type="text" th:field="*{valeur}" required>
+                                <div class="form-text">
+                                    <i class="fas fa-edit me-1"></i>
+                                    Saisissez la nouvelle valeur pour ce paramètre
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Boutons d'action -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/parametres/" class="btn btn-cancel text-white">
+                                <i class="fas fa-times me-2"></i>
+                                Annuler
+                            </a>
+                            <button class="btn btn-save text-white" type="submit">
+                                <i class="fas fa-save me-2"></i>
+                                Enregistrer les modifications
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

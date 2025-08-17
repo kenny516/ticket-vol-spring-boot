@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,9 +18,16 @@ public class Reservation {
 
     private Double prix;
     private Boolean valider = true;
+
+    @Column(name = "date_reservation", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Date dateReservation;
+
     private Integer nbPlaces;
     private Integer nbAdulte;
     private Integer nbEnfant;
+
+    @Column(name = "promotion_detail")
+    private String promotionDetail;
 
     @ManyToOne
     @JoinColumn(name = "id_place_vol")
@@ -27,4 +36,15 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "id_utilisateur")
     private Utilisateur utilisateur;
+
+    @Transient
+    private Boolean isCancelable;
+
+    public Boolean getCancelable() {
+        return isCancelable;
+    }
+
+    public void setCancelable(Boolean cancelable) {
+        isCancelable = cancelable;
+    }
 }
